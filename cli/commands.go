@@ -19,6 +19,7 @@ import (
 	"github.com/hashicorp/vault/builtin/logical/cassandra"
 	"github.com/hashicorp/vault/builtin/logical/consul"
 	"github.com/hashicorp/vault/builtin/logical/mysql"
+	"github.com/hashicorp/vault/builtin/logical/oracle"
 	"github.com/hashicorp/vault/builtin/logical/pki"
 	"github.com/hashicorp/vault/builtin/logical/postgresql"
 	"github.com/hashicorp/vault/builtin/logical/ssh"

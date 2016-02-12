@@ -1,9 +1,6 @@
 {
 	"ImportPath": "github.com/hashicorp/vault",
 	"GoVersion": "go1.5",
-	"Packages": [
-		"./..."
-	],
 	"Deps": [
 		{
 			"ImportPath": "github.com/armon/go-metrics",
@@ -25,11 +22,6 @@
 		},
 		{
 			"ImportPath": "github.com/aws/aws-sdk-go/private/endpoints",
-			"Comment": "v1.0.11-1-g87b1e60",
-			"Rev": "87b1e60a50b09e4812dee560b33a238f67305804"
-		},
-		{
-			"ImportPath": "github.com/aws/aws-sdk-go/private/protocol/ec2query",
 			"Comment": "v1.0.11-1-g87b1e60",
 			"Rev": "87b1e60a50b09e4812dee560b33a238f67305804"
 		},
@@ -75,11 +67,6 @@
 		},
 		{
 			"ImportPath": "github.com/aws/aws-sdk-go/service/dynamodb",
-			"Comment": "v1.0.11-1-g87b1e60",
-			"Rev": "87b1e60a50b09e4812dee560b33a238f67305804"
-		},
-		{
-			"ImportPath": "github.com/aws/aws-sdk-go/service/ec2",
 			"Comment": "v1.0.11-1-g87b1e60",
 			"Rev": "87b1e60a50b09e4812dee560b33a238f67305804"
 		},
@@ -225,6 +212,10 @@
 		{
 			"ImportPath": "github.com/mattn/go-isatty",
 			"Rev": "56b76bdf51f7708750eac80fa38b952bb9f32639"
+		},
+		{
+			"ImportPath": "github.com/mattn/go-oci8",
+			"Rev": "0fff8ef7588d7fa2df21b986b1be872d1bcd25ea"
 		},
 		{
 			"ImportPath": "github.com/mitchellh/cli",
