@@ -75,6 +75,7 @@ func Commands(metaPtr *command.Meta) map[string]cli.CommandFactory {
 					"pki":        pki.Factory,
 					"transit":    transit.Factory,
 					"mysql":      mysql.Factory,
+					"oracle":     oracle.Factory,
 					"ssh":        ssh.Factory,
 				},
 				ShutdownCh: makeShutdownCh(),
