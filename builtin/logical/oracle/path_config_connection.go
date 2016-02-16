@@ -49,7 +49,7 @@ func (b *backend) pathConnectionWrite(
 	}
 
 	// Verify the string
-	db, err := sql.Open("oracle", connString)
+	db, err := sql.Open("oci8", connString)
 
 	if err != nil {
 		return logical.ErrorResponse(fmt.Sprintf(
@@ -93,9 +93,9 @@ Configure the connection string to talk to Oracle.
 const pathConfigConnectionHelpDesc = `
 This path configures the connection string used to connect to Oracle.
 The value of the string is a Data Source Name (DSN). An example is
-using "username:password@protocol(address)/dbname?param=value"
+using "username/password@host:port/sid"
 
-For example, RDS may look like: "id:password@tcp(your-amazonaws-uri.com:3306)/dbname"
+For example, RDS may look like: "id/password@your-amazonaws-uri.com:1521)/sid"
 
 When configuring the connection string, the backend will verify its validity.
 `

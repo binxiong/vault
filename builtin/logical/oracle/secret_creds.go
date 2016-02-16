@@ -66,18 +66,23 @@ func (b *backend) secretCredsRevoke(
 	}
 	defer tx.Rollback()
 
-	// Revoke all permissions for the user. This is done before the
+    // Revoke permissions from the user. Before drop it
+	_, err = tx.Exec("REVOKE SELECT ANY TABLE FROM " + username)
+	if err != nil {
+		return nil, err
+	}
+
+	// Lock the user so no new connections are allowed. This is done before the
 	// drop, because Oracle explicitly documents that open user connections
-	// will not be closed. By revoking all grants, at least we ensure
-	// that the open connection is useless.
-	_, err = tx.Exec("REVOKE ALL PRIVILEGES, GRANT OPTION FROM '" + username + "'@'%'")
+	// will not be closed. 
+	_, err = tx.Exec("ALTER USER " + username + " ACCOUNT LOCK")
 	if err != nil {
 		return nil, err
 	}
 
 	// Drop this user. This only affects the next connection, which is
 	// why we do the revoke initially.
-	_, err = tx.Exec("DROP USER '" + username + "'@'%'")
+	_, err = tx.Exec("DROP USER '" + username + " CASCADE")
 	if err != nil {
 		return nil, err
 	}

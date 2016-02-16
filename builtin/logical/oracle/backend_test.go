@@ -57,8 +57,8 @@ func TestBackend_leaseWriteRead(t *testing.T) {
 }
 
 func testAccPreCheck(t *testing.T) {
-	if v := os.Getenv("MYSQL_DSN"); v == "" {
-		t.Fatal("MYSQL_DSN must be set for acceptance tests")
+	if v := os.Getenv("DSN"); v == "" {
+		t.Fatal("DSN must be set for acceptance tests")
 	}
 }
 
@@ -67,7 +67,7 @@ func testAccStepConfig(t *testing.T) logicaltest.TestStep {
 		Operation: logical.UpdateOperation,
 		Path:      "config/connection",
 		Data: map[string]interface{}{
-			"value": os.Getenv("MYSQL_DSN"),
+			"value": os.Getenv("DSN"),
 		},
 	}
 }
@@ -163,6 +163,6 @@ func testAccStepReadLease(t *testing.T) logicaltest.TestStep {
 }
 
 const testRole = `
-CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';
-GRANT SELECT ON *.* TO '{{name}}'@'%';
+CREATE USER '{{name}}' IDENTIFIED BY '{{password}}';
+GRANT CREATE SESSION, SELECT ANY TABLE TO '{{name}}';
 `
