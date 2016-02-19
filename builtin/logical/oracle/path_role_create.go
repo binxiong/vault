@@ -3,7 +3,6 @@ package oracle
 import (
 	"fmt"
     "strings"
-    "log"
 
 	"github.com/hashicorp/go-uuid"
 	"github.com/hashicorp/vault/logical"
@@ -47,8 +46,6 @@ func (b *backend) pathRoleCreateRead(
 	if role == nil {
 		return logical.ErrorResponse(fmt.Sprintf("unknown role: %s", name)), nil
 	}
-
-    log.Println(fmt.Sprintf("name: %s", name))
 
 	// Determine if we have a lease
 	lease, err := b.Lease(req.Storage)
@@ -94,9 +91,6 @@ func (b *backend) pathRoleCreateRead(
         password = password[:24]
     }
 
-    log.Println(fmt.Sprintf("username: %s", username))
-    log.Println(fmt.Sprintf("password: %s", password))
-
 	// Get our connection
 	db, err := b.DB(req.Storage)
 	if err != nil {
@@ -120,8 +114,6 @@ func (b *backend) pathRoleCreateRead(
 			return nil, err
 		}
 
-        log.Println(fmt.Sprintf("sql: %s", stmt))
-            
 		if _, err := stmt.Exec(); err != nil {
 			return nil, err
 		}
