@@ -160,8 +160,8 @@ The names of the variables must be surrounded by "{{" and "}}" to be replaced.
 
 Example of a decent SQL query to use:
 
-  CREATE USER '{{name}}' IDENTIFIED BY '{{password}}';
-  GRANT SELECT ANY TABLE TO '{{name}}';
+  CREATE USER {{name}} IDENTIFIED BY {{password}};
+  GRANT SELECT ANY TABLE TO {{name}};
 
 Note the above user would be able to access anything in db. Please see the Oracle
 manual on the GRANT command to learn how to do more fine grained access.

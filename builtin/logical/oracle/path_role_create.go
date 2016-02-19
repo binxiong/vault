@@ -2,12 +2,19 @@ package oracle
 
 import (
 	"fmt"
+    "strings"
+    "log"
 
 	"github.com/hashicorp/go-uuid"
 	"github.com/hashicorp/vault/logical"
 	"github.com/hashicorp/vault/logical/framework"
 	_ "github.com/mattn/go-oci8"
 )
+
+func formatOraIdentifier(id string) (string, error) {
+    r := strings.NewReplacer("-", "_")
+    return r.Replace(id), nil
+}
 
 func pathRoleCreate(b *backend) *framework.Path {
 	return &framework.Path{
@@ -41,6 +48,8 @@ func (b *backend) pathRoleCreateRead(
 		return logical.ErrorResponse(fmt.Sprintf("unknown role: %s", name)), nil
 	}
 
+    log.Println(fmt.Sprintf("name: %s", name))
+
 	// Determine if we have a lease
 	lease, err := b.Lease(req.Storage)
 	if err != nil {
@@ -55,18 +64,38 @@ func (b *backend) pathRoleCreateRead(
 	if len(displayName) > 10 {
 		displayName = displayName[:10]
 	}
+
 	userUUID, err := uuid.GenerateUUID()
 	if err != nil {
 		return nil, err
 	}
-	username := fmt.Sprintf("%s-%s", displayName, userUUID)
-	if len(username) > 16 {
-		username = username[:16]
-	}
-	password, err := uuid.GenerateUUID()
+
+    userUUID, err = formatOraIdentifier(userUUID)
 	if err != nil {
 		return nil, err
 	}
+
+	username := fmt.Sprintf("%s_%s", displayName, userUUID)
+	if len(username) > 30 {
+		username = username[:30]
+	}
+	pwdUUID, err := uuid.GenerateUUID()
+	if err != nil {
+		return nil, err
+	}
+
+    pwdUUID, err = formatOraIdentifier(pwdUUID)
+	if err != nil {
+		return nil, err
+	}
+
+    password := fmt.Sprintf("%s%s", "p", pwdUUID)
+    if len(password) > 24 {
+        password = password[:24]
+    }
+
+    log.Println(fmt.Sprintf("username: %s", username))
+    log.Println(fmt.Sprintf("password: %s", password))
 
 	// Get our connection
 	db, err := b.DB(req.Storage)
@@ -90,6 +119,9 @@ func (b *backend) pathRoleCreateRead(
 		if err != nil {
 			return nil, err
 		}
+
+        log.Println(fmt.Sprintf("sql: %s", stmt))
+            
 		if _, err := stmt.Exec(); err != nil {
 			return nil, err
 		}
